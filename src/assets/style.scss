@@ -1,0 +1,162 @@
+$black-color: rgb(40, 38, 38);
+$border-color: rgb(184, 184, 184);
+$border: 1px solid $border-color;
+$border-radius: 4px;
+$box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+$transition-duration: .3s;
+
+@mixin container {
+    border-radius: $border-radius;
+    border: $border;
+    box-shadow: $box-shadow;
+    padding: 20px;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+::after,
+::before {
+    box-sizing: inherit;
+}
+
+ul {
+    list-style: none;
+    padding-left: 20px;
+    padding-top: 7px;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: $black-color;
+}
+
+#app {
+    width: 100wh;
+    height: 100vh;
+    padding: 30px;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 40px;
+    @include container;
+}
+
+.container-s {
+    height: 100%;
+    flex-basis: 50%;
+    @include container;
+}
+
+h2 {
+    font-size: 20px;
+    margin: 0;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+li {
+    margin-bottom: 7px;
+}
+
+.list {
+    position: relative;
+}
+
+.arrow-img {
+    width: 30px;
+    position: absolute;
+    left: -30px;
+    top: -7px;
+    transition: transform $transition-duration;
+}
+
+.arrow-img.down {
+    transform: rotate(90deg);
+}
+
+.list-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+//Input type="number" styles
+input[type="number"] {
+    border: none;
+    width: 50px;
+    transform: translateY(-5%);
+    border-radius: $border-radius;
+    transition: background-color $transition-duration, outline-color $transition-duration;
+    outline: 1px solid transparent;
+}
+
+input[type="number"]:focus-visible {
+    outline-color: #114BA9;
+}
+
+input[type="number"]:hover {
+    background-color: #deecf9;
+}
+
+input[type="number"]:active {
+    outline-color: transparent;
+    background-color: #9bc3d739;
+}
+
+input[type="color"] {
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 0;
+    opacity: 0;
+    z-index: 2;
+    cursor: pointer;
+}
+
+// ?
+.item-ui-container {
+    flex-basis: 100px;
+    display: flex;
+}
+
+.input-color-container {
+    position: relative;
+}
+
+.heart-img {
+    display: block;
+    transform: translateY(15%);
+}
+
+//List card styles
+.list-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.list-card-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.list-card {
+    @include container;
+    box-shadow: none;
+    padding: 10px;
+}
+
+
+//Sorted items style
+.sorted-item-container {
+    display: flex;
+}
+
+
