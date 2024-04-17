@@ -2,24 +2,28 @@
     <li class="list">
         <img src="@/assets/img/arrow-right.svg" alt="arrow" class="arrow-img" :class="list.ui.isOpen ? 'down' : ''"
         @click="listsStore.toggleOpen(list.id)">
-        <input
-        class="custom-checkbox"
-        type="checkbox"
-        id="list"
-        name="list"
-        />
-        <label for="list">{{ list.name }}</label>
+        <div class="checkbox-container">
+          <input
+          class="custom-checkbox"
+          type="checkbox"
+          id="list"
+          name="list"
+          :class="checkboxClass"
+          />
+          <span class="checkmark" @click="listsStore.toggleCheckbox(list.id)"></span>
+          <label for="list">{{ list.name }}</label>
+        </div>
         <transition name="slide-fade">
             <ul class="items-list" v-if="list.ui.isOpen">
-            <list-item v-for="item in list.items" :key="item.id" :item="item"/>
-        </ul>
+              <list-item v-for="item in list.items" :key="item.id" :item="item"/>
+          </ul>
         </transition>
     </li>
 </template>
 
 <script setup>
 import ListItem from '@/components/ListItem.vue';
-import { defineProps } from 'vue';
+import { defineProps, computed } from 'vue';
 import { useListsStore } from '@/assets/stores/lists';
 
 
@@ -34,6 +38,7 @@ const props = defineProps({
             ui: {
               isOpen: Boolean,
               isShuffled: Boolean,
+              checked: String,
             }
         },
         default: () => ({
@@ -43,20 +48,21 @@ const props = defineProps({
             ui: {
               isOpen: false,
               isShuffled: false,
+              checked: "none",
             }
         })
     }
 })
 
-console.log(props);
+const checkboxClass = computed(() => ({
+  'none': props.list.ui.checked === 'none',
+  'checked': props.list.ui.checked === 'checked',
+  'intermediate': props.list.ui.checked === 'intermediate',
+}))
 
 </script>
 
 <style lang="css">
-/*
-  Enter and leave animations can use different
-  durations and timing functions.
-*/
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;
 }

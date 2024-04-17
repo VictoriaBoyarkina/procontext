@@ -5,6 +5,7 @@
             type="checkbox"
             id="list-item"
             name="list-item"
+            v-model="itemStore.ui.checked"
             />
             <label for="list-item">{{ item.name }}</label>
         </div>
@@ -38,6 +39,9 @@ const props = defineProps({
             num: Number,
             id: String,
             listId: Number,
+            ui: {
+                checked: Boolean,
+            }
         },
         default: () => ({
             name: '',
@@ -45,6 +49,9 @@ const props = defineProps({
             num: 0,
             id: '',
             listId: 0,
+            ui: {
+                checked: false,
+            }
         }),
     }
 })

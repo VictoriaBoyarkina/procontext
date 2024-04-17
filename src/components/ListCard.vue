@@ -1,18 +1,31 @@
 <template>
     <div class="list-card">
         <div class="list-card-header">
-            <h2>{{ list.name }}</h2>
-            <button v-if="list.ui.isOpen" class="btn" @click="listsStore.toggleShuffle(list.id)">{{ sortedOrShuffled(list.id) }}</button>
+            <p>{{ list.name }}</p>
+            <transition name="fade">
+                <button v-if="list.ui.isOpen" class="btn" @click="listsStore.toggleShuffle(list.id)">
+                    {{ sortedOrShuffled(list.id) }}
+                </button>
+            </transition>
         </div>
-        <div class="list-card-body" v-if="list.ui.isOpen">
-            <sorted-item v-for="item in list.items" :key="item.id" :item="item"/>
+        <div class="list-card-body">
+            <transition name="slide-fade-right">
+                <div v-if="!list.ui.isShuffled">
+                    <sorted-item v-for="item in sortedArray" :key="item.id" :item="item"/>
+                </div>
+            </transition>
+            <transition name="slide-fade-right-delay">
+                <shuffled-items @deleteItem="deleteItem" v-if="list.ui.isShuffled" :array="shuffledArray" :listId="list.id"/>
+            </transition>
         </div>
     </div>
 </template>
 
 <script setup>
 import SortedItem from '@/components/SortedItem.vue'
-import { defineProps } from 'vue'
+import ShuffledItems from '@/components/ShuffledItems.vue'
+import { defineProps, computed } from 'vue';
+import _ from 'lodash';
 import { useListsStore } from '@/assets/stores/lists'
 import { storeToRefs } from 'pinia'
 
@@ -43,5 +56,59 @@ const props = defineProps({
     }
 })
 
-console.log(props);
+const sortedArray = computed(() => {
+    return props.list.items.filter((item) => item.ui.checked)
+})
+
+const getArray = computed(() => {
+    let array = [];
+    sortedArray.value.forEach((item) => {
+        const itemArray = Array.from({ length: item.num }, () => item.color);
+        array = [...array, ...itemArray];
+    });
+    return array;
+})
+
+const shuffledArray = computed(() => _.shuffle(getArray.value));
 </script>
+
+<style lang="css">
+.slide-fade-right-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-right-leave-active {
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-right-enter-from,
+.slide-fade-right-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+
+.slide-fade-right-delay-enter-active {
+  transition: all 0.2s ease-out;
+  transition-delay: 0.3s;
+}
+
+.slide-fade-right-delay-leave-active {
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-right-delay-enter-from,
+.slide-fade-right-delay-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
