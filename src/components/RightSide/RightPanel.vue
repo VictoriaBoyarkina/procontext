@@ -7,8 +7,8 @@
 </template>
 
 <script setup>
-import ListCard from '@/components/ListCard.vue'
-import { useListsStore } from '@/assets/stores/lists';
+import ListCard from './ListCard.vue'
+import { useListsStore } from '@/stores/lists';
 
 const listsStore = useListsStore();
 </script>

@@ -42,7 +42,7 @@ p {
     margin: 0;
 }
 
-//Container styles
+//Main container styles
 .container {
     width: 100%;
     height: 100%;
@@ -51,21 +51,32 @@ p {
     @include container;
 }
 
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    #app {
+        height: auto;
+    }
+}
+
+//Left and right containers
 .container-s {
     height: 100%;
     flex-basis: 50%;
     @include container;
+    overflow-y: auto;
 }
 
 //Lists styles
 ul {
     list-style: none;
     padding-left: 20px;
-    padding-top: 7px;
+    padding-top: 20px;
 }
 
 li {
-    margin-bottom: 7px;
+    margin-bottom: 20px;
 }
 
 .list {
@@ -87,40 +98,49 @@ li {
 .list-item {
     display: flex;
     justify-content: space-between;
+    border-bottom: $border;
+    align-items: center;
 }
 
-//Input type="number" styles
-input[type="number"] {
+//Container for number input and color cube
+.item-ui-container {
+    flex-basis: 100px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+//Input type="text" styles
+input[type="text"] {
+    text-align: center;
+    width: 40px;
     border: none;
-    width: 50px;
-    transform: translateY(-5%);
+    padding: 5px;
     border-radius: $border-radius;
     transition: background-color $transition-duration, outline-color $transition-duration;
-    outline: 1px solid transparent;
-}
+    outline: 1px solid transparent;}
 
-input[type="number"]:focus-visible {
+input[type="text"]:focus-visible {
     outline-color: #114BA9;
 }
 
-input[type="number"]:hover {
+input[type="text"]:hover {
     background-color: #deecf9;
 }
 
-input[type="number"]:active {
+input[type="text"]:active {
     outline-color: transparent;
     background-color: #9bc3d739;
 }
 
-//Input type="checkbox" styles
-input[type="checkbox"] {
-    margin-right: 10px;
+//Custom nput type="color" styles
+.input-color-container {
+    position: relative;
 }
 
-//Input type="color" styles
 input[type="color"] {
-    width: 15px;
-    height: 15px;
+    width: 17px;
+    height: 17px;
     position: absolute;
     top: 0;
     opacity: 0;
@@ -128,20 +148,19 @@ input[type="color"] {
     cursor: pointer;
 }
 
-// ?
-.item-ui-container {
-    flex-basis: 100px;
-    display: flex;
-}
-
-.input-color-container {
-    position: relative;
-}
-
-.heart-img {
+.color-cube {
+    width: 17px;
+    height: 17px;
     display: block;
-    transform: translateY(15%);
     cursor: pointer;
+    border-radius: $border-radius;
+    transition: all $transition-duration;
+    box-shadow: inset rgba(255,255,255,0.2) 1px  1px 3px 1px,
+    inset rgba(0, 0, 0, 0.367) -1px -1px 3px -1px;
+}
+
+input[type="color"]:hover ~ .color-cube {
+    transform: scale(1.5);
 }
 
 //List card styles
@@ -208,70 +227,56 @@ input[type="color"] {
 }
 
 
-/* Customize the label (the container) */
+// Custom checkbox
 .checkbox-container {
-    display: block;
+    display: flex;
+    gap: 7px;
+}
+  
+.checkmark {
     position: relative;
-    padding-left: 35px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    font-size: 22px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-  
-  /* Hide the browser's default checkbox */
-  .checkbox-container input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-  }
-  
-  /* Create a custom checkbox */
-  .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 25px;
-    width: 25px;
-    background-color: #eee;
-  }
-  
-  /* On mouse-over, add a grey background color */
-  .checkbox-container:hover input ~ .checkmark {
-    background-color: #ccc;
-  }
-  
-  /* When the checkbox is checked, add a blue background */
-  .checkbox-container input.checked ~ .checkmark {
-    background-color: #2196F3;
-  }
-  
-  /* Create the checkmark/indicator (hidden when not checked) */
-  .checkmark:after {
+    height: 17px;
+    width: 17px;
+    border: 2px solid $btn-color;
+    border-radius: $border-radius;
+}
+
+.checkmark.none:hover {
+    background-color: rgba(186, 206, 248, 0.703);
+    border: none;
+}
+
+
+.checkmark.checked {
+    border: 2px solid $btn-color;
+}
+
+.checkmark::after {
     content: "";
     position: absolute;
     display: none;
-  }
-  
-  /* Show the checkmark when checked */
-  .checkbox-container input.checked ~ .checkmark:after {
+}
+
+.checkmark.checked::after {
     display: block;
-  }
-  
-  /* Style the checkmark/indicator */
-  .checkbox-container .checkmark:after {
-    left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
+    left: 5px;
+    top: 1px;
+    width: 4px;
+    height: 11px;
+    border: solid $btn-color;
     border-width: 0 3px 3px 0;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
-  }
+}
+
+.checkmark.intermediate::after {
+    display: block;
+    left: 4px;
+    top: 4px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50px;
+    border: solid $btn-color;
+    border-width: 3px;
+}

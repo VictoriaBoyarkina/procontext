@@ -116,7 +116,17 @@ export const useListsStore = defineStore({
             const item = list.items.find((item) => item.color === color);
             item.num -= 1;
         },
-        toggleCheckbox(listId) {
+        updateItemNum(listId, itemId, newValue) {
+            const list = this.lists.find(list => list.id === listId);
+            const item = list.items.find(item => item.id === itemId);
+            const onlyNumeric = newValue.replace(/\D/g,'').slice(0, 3);
+            if (onlyNumeric.length > 0) {
+                item.num = parseInt(onlyNumeric, 10);
+            } else {
+                item.num = 0;
+            }
+        },
+        toggleListCheckbox(listId) {
             const list = this.lists.find((list) => list.id === listId);
             const notCheckedItems = list.items.filter((item) => !item.ui.checked)
             const checkedItems = list.items.filter((item) => item.ui.checked)
@@ -149,6 +159,18 @@ export const useListsStore = defineStore({
                     break;
                 default:
                     break;
+            }
+        },
+        toggleItemCheckbox(listId, itemId) {
+            const list = this.lists.find((list) => list.id === listId);
+            const item = list.items.find((item) => item.id === itemId);
+            item.ui.checked = !item.ui.checked;
+            const notCheckedItems = list.items.filter((item) => !item.ui.checked);
+            const checkedItems = list.items.filter((item) => item.ui.checked);
+            if (notCheckedItems.length === 0) {
+                list.ui.checked = 'checked';
+            } else if (checkedItems.length === 0) {
+                list.ui.checked = 'none';
             }
         }
     },

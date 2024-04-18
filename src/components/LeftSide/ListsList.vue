@@ -3,15 +3,8 @@
         <img src="@/assets/img/arrow-right.svg" alt="arrow" class="arrow-img" :class="list.ui.isOpen ? 'down' : ''"
         @click="listsStore.toggleOpen(list.id)">
         <div class="checkbox-container">
-          <input
-          class="custom-checkbox"
-          type="checkbox"
-          id="list"
-          name="list"
-          :class="checkboxClass"
-          />
-          <span class="checkmark" @click="listsStore.toggleCheckbox(list.id)"></span>
-          <label for="list">{{ list.name }}</label>
+          <span class="checkmark" :class="checkboxClass" @click="listsStore.toggleListCheckbox(list.id)"></span>
+          <p for="list">{{ list.name }}</p>
         </div>
         <transition name="slide-fade">
             <ul class="items-list" v-if="list.ui.isOpen">
@@ -22,9 +15,9 @@
 </template>
 
 <script setup>
-import ListItem from '@/components/ListItem.vue';
+import ListItem from './ListItem.vue';
 import { defineProps, computed } from 'vue';
-import { useListsStore } from '@/assets/stores/lists';
+import { useListsStore } from '@/stores/lists';
 
 
 const listsStore = useListsStore();

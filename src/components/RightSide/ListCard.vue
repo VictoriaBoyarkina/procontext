@@ -3,7 +3,7 @@
         <div class="list-card-header">
             <p>{{ list.name }}</p>
             <transition name="fade">
-                <button v-if="list.ui.isOpen" class="btn" @click="listsStore.toggleShuffle(list.id)">
+                <button v-if="sortedArray.length" class="btn" @click="listsStore.toggleShuffle(list.id)">
                     {{ sortedOrShuffled(list.id) }}
                 </button>
             </transition>
@@ -22,11 +22,11 @@
 </template>
 
 <script setup>
-import SortedItem from '@/components/SortedItem.vue'
-import ShuffledItems from '@/components/ShuffledItems.vue'
+import SortedItem from './SortedItem.vue'
+import ShuffledItems from './ShuffledItems.vue'
 import { defineProps, computed } from 'vue';
 import _ from 'lodash';
-import { useListsStore } from '@/assets/stores/lists'
+import { useListsStore } from '@/stores/lists'
 import { storeToRefs } from 'pinia'
 
 const listsStore = useListsStore();

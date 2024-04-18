@@ -7,8 +7,8 @@
 </template>
 
 <script setup>
-import ListView from './ListComponent.vue';
-import { useListsStore } from '@/assets/stores/lists';
+import ListView from './ListsList.vue';
+import { useListsStore } from '@/stores/lists';
 
 const listsStore = useListsStore();
 </script>
